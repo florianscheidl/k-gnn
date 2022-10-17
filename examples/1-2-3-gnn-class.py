@@ -38,13 +38,13 @@ class MyFilter(object):
         return data.num_nodes <= 70
 
 
-class MyPreTransform(object):
+class MyPreTransformNoFeatures(object):
     def __call__(self, data):
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long)
-        data.x = F.one_hot(data.x, num_classes=data.y.size()[-1]).to(torch.float)
+        data.x = F.one_hot(data.x, num_classes=136).to(torch.float)
         return data
 
 
@@ -54,8 +54,10 @@ path = osp.join(
 
 
 # load and transform dataset
-pre_transform = T.Compose([MyPreTransform()])
-pre_filter = MyFilter()
+if args.dataset.startswith('TU_IMDB'):
+    pre_transform=T.Compose([MyPreTransformNoFeatures()])
+else:
+    pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
 
 if args.data_format == 'PyG':
     dataset = load_pyg(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
