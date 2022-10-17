@@ -125,7 +125,7 @@ class Net(torch.nn.Module):
                     data.x = non_linearity(getattr(self, 'conv{}_{}'.format(j, i))(data.x, getattr(data, 'edge_index_{}'.format(j+1))))
             x = data.x
             print(j,x.shape)
-            x_per_dim.append(scatter_mean(data.x, data.batch, dim=0))
+            x_per_dim.append(scatter_mean(data.x, getattr(data, f'batch_{j+1}'), dim=0))
             if j<args.max_k-1:
                 data.x = avg_pool(x, getattr(data, f'assignment_index_{j+2}'))
                 data.x = torch.cat([data.x, getattr(data, f'iso_type_{j+2}')], dim=1)
