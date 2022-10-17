@@ -1,4 +1,9 @@
+import os
 import os.path as osp
+import sys
+
+sys.path.append(os.getcwd())
+
 
 import wandb
 import argparse
