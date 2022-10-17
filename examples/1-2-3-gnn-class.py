@@ -78,7 +78,7 @@ num_i_3 = dataset.data.iso_type_3.max().item() + 1
 dataset.data.iso_type_3 = F.one_hot(
     dataset.data.iso_type_3, num_classes=num_i_3).to(torch.float)
 
-num_i = [args.initial_emb_dim, num_i_2, num_i_3]
+num_i = [args.initial_emb_dim, num_i_2+args.emd_dim, num_i_3+args.emd_dim]
 
 
 class Net(torch.nn.Module):
