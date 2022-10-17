@@ -85,6 +85,8 @@ class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
 
+        print(dataset.num_features)
+        print(dataset.num_node_attributes)
         # initial layer
         setattr(self,
                 'conv_initial',
