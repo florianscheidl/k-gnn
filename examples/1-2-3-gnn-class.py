@@ -124,6 +124,7 @@ class Net(torch.nn.Module):
                 else:
                     data.x = non_linearity(getattr(self, 'conv{}_{}'.format(j, i))(data.x, getattr(data, 'edge_index_{}'.format(j+1))))
             x = data.x
+            print(j,x.shape)
             x_per_dim.append(scatter_mean(data.x, data.batch, dim=0))
             if j<args.max_k-1:
                 data.x = avg_pool(x, getattr(data, f'assignment_index_{j+2}'))
