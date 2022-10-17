@@ -66,12 +66,6 @@ elif args.data_format == 'ogb':
 else:
     raise ValueError('Unknown data format: {}'.format(args.data_format))
 
-# This actually shouldn't happen (since we try to catch all node-feature-less datasets in the if statement)
-if dataset.data.num_node_features == 0:
-    UserWarning("No node features found. Using one-hot encoding of node degrees.")
-    pre_transform=T.Compose([MyPreTransformNoFeatures()])
-    dataset = load_pyg(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
-
 
 perm = torch.randperm(len(dataset), dtype=torch.long)
 dataset = dataset[perm]
