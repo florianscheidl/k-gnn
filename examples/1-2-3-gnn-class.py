@@ -65,7 +65,7 @@ path = osp.join(
 
 
 # load and transform dataset
-if args.dataset.startswith('TU_IMDB') or args.dataset.startswith('TU_PROTEINS'):
+if args.dataset.startswith('TU_IMDB') or args.dataset=='TU_PROTEINS':
     pre_transform=T.Compose([MyPreTransformNoFeatures()])
 else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
