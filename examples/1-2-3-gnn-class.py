@@ -85,14 +85,11 @@ class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
 
-        print(type(dataset.data.x) if hasattr(dataset.data, 'x') else "Does not have x.")
-        print(dir(dataset.data))
-        input_feature_dim = dataset.data.x.size()
-        print(input_feature_dim)
+        print("Num node features: ",dataset.data.num_node_features)
         # initial layer
         setattr(self,
                 'conv_initial',
-                GraphConv(input_feature_dim, args.initial_emb_dim))
+                GraphConv(dataset.data.num_node_features, args.initial_emb_dim))
 
         # args.num_layers_per_dim layers per dimension j
         for j in range(args.max_k):
