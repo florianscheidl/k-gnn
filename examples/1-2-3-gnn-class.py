@@ -133,6 +133,7 @@ class Net(torch.nn.Module):
                 data.x = avg_pool(x, getattr(data, f'assignment_index_{j+2}'))
                 data.x = torch.cat([data.x, getattr(data, f'iso_type_{j+2}')], dim=1)
             else:
+                print([x.shape for x in x_per_dim])
                 x = torch.cat(x_per_dim, dim=1)
 
         if args.no_train:
