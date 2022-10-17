@@ -38,15 +38,15 @@ def get_parser():
     parser.add_argument('--lr_scheduler_min', type=float, default=0.00001,
                         help='min LR for `ReduceLROnPlateau` lr decay (default: 1e-5)')
     parser.add_argument('--max_k', type=int, default=3,
-                        help='Maximum length of node-tuples')
+                        help='Maximum length of node-tuples (default: 3)')
     parser.add_argument('--num_layers_per_dim', type=int, default=3,
-                        help='number of message passing layers (default: 5)')
+                        help='number of message passing layers (default: 3)')
     parser.add_argument('--num_linear_layers', type=int, default=3,
-                        help='number of linear layers before the prediction.')
-    parser.add_argument('--initial_emb_dim', type=int, default=64,
-                        help='dimensionality of hidden units in models (default: 300)')
+                        help='number of linear layers before the prediction (default: 3.')
+    parser.add_argument('--initial_emb_dim', type=int, default=32,
+                        help='dimensionality of hidden units in models (default: 32)')
     parser.add_argument('--emb_dim', type=int, default=64,
-                        help='dimensionality of hidden units in models (default: 300)')
+                        help='dimensionality of hidden units in models (default: 64)')
     parser.add_argument('--batch_size', type=int, default=32,
                         help='input batch size for training (default: 32)')
     parser.add_argument('--epochs', type=int, default=100,
@@ -54,7 +54,9 @@ def get_parser():
     # parser.add_argument('--num_workers', type=int, default=0,
     #                     help='number of workers (default: 0)')
     parser.add_argument('--dataset', type=str, default="TU_MUTAG",
-                        help='dataset name (default: PROTEINS)')
+                        help='dataset name (default: TU_MUTAG)')
+    parser.add_argument('--data_format', type=str, default="PyG",
+                        help='dataset format (default: PyG)')
 
     # TODO
     parser.add_argument('--task_type', type=str, default='classification',
