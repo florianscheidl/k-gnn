@@ -141,7 +141,7 @@ class Net(torch.nn.Module):
         for l in range(args.num_linear_layers-1):
             x = non_linearity(getattr(self, 'fc{}'.format(l))(x))
             if l<args.num_linear_layers-2:
-                x = F.dropout(x, p=args.dropout, training=self.training)
+                x = F.dropout(x, p=args.drop_rate, training=self.training)
         x = getattr(self, 'fc{}'.format(args.num_linear_layers-1))(x)
         return F.log_softmax(x, dim=1)
 
