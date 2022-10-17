@@ -17,7 +17,7 @@ from torch_geometric.utils import degree
 import torch_geometric.transforms as T
 
 from k_gnn import DataLoader, GraphConv, avg_pool
-from k_gnn import load_pyg, load_ogb
+from pyg_loader import load_pyg, load_ogb
 from k_gnn import TwoMalkin, ConnectedThreeMalkin
 from get_parser import get_parser
 
