@@ -75,6 +75,7 @@ dataset.data.iso_type_3 = F.one_hot(
 
 num_i = [args.initial_emb_dim, num_i_2, num_i_3]
 
+
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -96,20 +97,9 @@ class Net(torch.nn.Module):
 
         # final_classification layers
         setattr(self, 'fc0', torch.nn.Linear(args.max_k*args.emb_dim, args.emb_dim))
-        for l in range(1,args.num_linear_layers-1):
+        for l in range(1, args.num_linear_layers-1):
             setattr(self, 'fc{}'.format(l), torch.nn.Linear(args.emb_dim, args.emb_dim/2))
         setattr(self, 'fc{}'.format(args.num_linear_layers-1), torch.nn.Linear(max(4,args.emb_dim/(2^(args.max_k-2))), dataset.num_classes))
-
-        # self.conv1 = GraphConv(dataset.num_features, 32)
-        # self.conv2 = GraphConv(32, 64)
-        # self.conv3 = GraphConv(64, 64)
-        # self.conv4 = GraphConv(64 + num_i_2, 64)
-        # self.conv5 = GraphConv(64, 64)
-        # self.conv6 = GraphConv(64 + num_i_3, 64)
-        # self.conv7 = GraphConv(64, 64)
-        # self.fc1 = torch.nn.Linear(3 * 64, 64)
-        # self.fc2 = torch.nn.Linear(64, 32)
-        # self.fc3 = torch.nn.Linear(32, dataset.num_classes)
 
     def reset_parameters(self):
         for (name, module) in self._modules.items():
@@ -145,37 +135,6 @@ class Net(torch.nn.Module):
                 x = F.dropout(x, p=args.dropout, training=self.training)
         x = getattr(self, 'fc{}'.format(args.num_linear_layers-1))(x)
         return F.log_softmax(x, dim=1)
-
-        # data.x = non_linearity(self.conv1(data.x, data.edge_index))
-        # data.x = non_linearity(self.conv2(data.x, data.edge_index))
-        # data.x = non_linearity(self.conv3(data.x, data.edge_index))
-        # x = data.x
-        # x_1 = scatter_mean(data.x, data.batch, dim=0)
-        #
-        # data.x = avg_pool(x, data.assignment_index_2)
-        # data.x = torch.cat([data.x, data.iso_type_2], dim=1)
-        #
-        # data.x = non_linearity(self.conv4(data.x, data.edge_index_2))
-        # data.x = non_linearity(self.conv5(data.x, data.edge_index_2))
-        # x_2 = scatter_mean(data.x, data.batch_2, dim=0)
-        #
-        # data.x = avg_pool(x, data.assignment_index_3)
-        # data.x = torch.cat([data.x, data.iso_type_3], dim=1)
-        #
-        # data.x = non_linearity(self.conv6(data.x, data.edge_index_3))
-        # data.x = non_linearity(self.conv7(data.x, data.edge_index_3))
-        # x_3 = scatter_mean(data.x, data.batch_3, dim=0)
-        #
-        # x = torch.cat([x_1, x_2, x_3], dim=1)
-        #
-        # if args.no_train:
-        #     x = x.detach()
-        #
-        # x = non_linearity(self.fc1(x))
-        # x = F.dropout(x, p=args.drop_rate, training=self.training)
-        # x = non_linearity(self.fc2(x))
-        # x = self.fc3(x)
-        # return F.log_softmax(x, dim=1)
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

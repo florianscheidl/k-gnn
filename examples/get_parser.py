@@ -18,8 +18,8 @@ def get_parser():
     # parser.add_argument('--model', type=str, default='sparse_cin',
     #                     help='model, possible choices: cin, dummy, ... (default: cin)')
     parser.add_argument('--drop_rate', type=float, default=0.0,
-                        help='dropout rate (default: 0.5)')
-    parser.add_argument('--nonlinearity', type=str, default='relu',
+                        help='dropout rate (default: 0.0)')
+    parser.add_argument('--nonlinearity', type=str, default='elu',
                         help='activation function (default: relu)')
     # parser.add_argument('--pool_func', type=str, default='sum',
     #                     help='Pooling function (default: avg_pool)')
@@ -53,7 +53,7 @@ def get_parser():
                         help='number of epochs to train (default: 100)')
     # parser.add_argument('--num_workers', type=int, default=0,
     #                     help='number of workers (default: 0)')
-    parser.add_argument('--dataset', type=str, default="PROTEINS",
+    parser.add_argument('--dataset', type=str, default="TU_MUTAG",
                         help='dataset name (default: PROTEINS)')
 
     # TODO

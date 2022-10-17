@@ -12,6 +12,7 @@ from .dataloader import DataLoader
 from .graph_conv import GraphConv
 from .pool import add_pool, max_pool, avg_pool
 from .complete import Complete
+from .pyg_loader import load_pyg, load_ogb
 
 __all__ = [
     'two_local',
@@ -38,4 +39,6 @@ __all__ = [
     'max_pool',
     'avg_pool',
     'Complete',
+    'load_pyg',
+    'load_ogb',
 ]
