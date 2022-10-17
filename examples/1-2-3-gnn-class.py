@@ -198,6 +198,7 @@ def test(loader):
 
 
 acc = []
+wandb.init()
 for i in range(args.folds):
     model.reset_parameters()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
@@ -246,6 +247,7 @@ for i in range(args.folds):
         print('Epoch: {:03d}, LR: {:7f}, Train Loss: {:.7f}, '
               'Val Loss: {:.7f}, Test Acc: {:.7f}'.format(
                   epoch, lr, train_loss, val_loss, test_acc))
+        wandb.log({'epoch': epoch, 'train_loss': train_loss, 'val_loss': val_loss, 'test_acc': test_acc})
     acc.append(test_acc)
 acc = torch.tensor(acc)
 print('---------------- Final Result ----------------')
