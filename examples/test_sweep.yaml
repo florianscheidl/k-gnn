@@ -1,0 +1,9 @@
+program: 1-2-3-gnn-class.py
+command:
+  - ${interpreter}
+  - ${program}
+  - ${args}
+method: random
+parameters:
+  seed:
+    values: [0, 1, 2]
