@@ -1,8 +1,6 @@
 from graph_cpu import two_local, connected_two_local
 from graph_cpu import two_malkin, connected_two_malkin
-from graph_cpu import three_local, connected_three_local
 from graph_cpu import three_malkin, connected_three_malkin
-from graph_cpu import assignment_2to3
 from .transform import TwoLocal, ConnectedTwoLocal
 from .transform import TwoMalkin, ConnectedTwoMalkin
 from .transform import ThreeLocal, ConnectedThreeLocal
@@ -12,7 +10,7 @@ from .dataloader import DataLoader
 from .graph_conv import GraphConv
 from .pool import add_pool, max_pool, avg_pool
 from .complete import Complete
-from .pyg_loader import load_pyg, load_ogb
+from examples.pyg_loader import load_pyg, load_ogb
 
 __all__ = [
     'two_local',
