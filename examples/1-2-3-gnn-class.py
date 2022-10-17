@@ -87,7 +87,6 @@ class Net(torch.nn.Module):
 
         input_feature_dim = dataset.data.x.size()[-1]
         print(input_feature_dim)
-        print(dataset.num_node_attributes)
         # initial layer
         setattr(self,
                 'conv_initial',
