@@ -104,7 +104,7 @@ class Net(torch.nn.Module):
         setattr(self, 'fc0', torch.nn.Linear(args.max_k*args.emb_dim, args.emb_dim))
         for l in range(1, args.num_linear_layers-1):
             setattr(self, 'fc{}'.format(l), torch.nn.Linear(int(args.emb_dim/(2^(l-1))), int(args.emb_dim/(2^l))))
-        setattr(self, 'fc{}'.format(args.num_linear_layers-1), torch.nn.Linear(int(args.emb_dim/2^(args.num_linear_layers-2)), dataset.num_classes))
+        setattr(self, 'fc{}'.format(args.num_linear_layers-1), torch.nn.Linear(int(args.emb_dim/(2^(args.num_linear_layers-2))), dataset.num_classes))
 
     def reset_parameters(self):
         for (name, module) in self._modules.items():
