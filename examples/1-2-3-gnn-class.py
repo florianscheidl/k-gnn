@@ -123,9 +123,7 @@ class Net(torch.nn.Module):
                     data.x = non_linearity(getattr(self, 'conv{}_{}'.format(j, i))(data.x, data.edge_index))
                 else:
                     data.x = non_linearity(getattr(self, 'conv{}_{}'.format(j, i))(data.x, getattr(data, 'edge_index_{}'.format(j+1))))
-                print(data.x.shape)
             x = data.x
-            print(j,x.shape)
             if j==0:
                 x_per_dim.append(scatter_mean(data.x, getattr(data, 'batch'), dim=0))
             else:
@@ -134,14 +132,12 @@ class Net(torch.nn.Module):
                 data.x = avg_pool(x, getattr(data, f'assignment_index_{j+2}'))
                 data.x = torch.cat([data.x, getattr(data, f'iso_type_{j+2}')], dim=1)
             else:
-                print([x.shape for x in x_per_dim])
                 x = torch.cat(x_per_dim, dim=1)
 
         if args.no_train:
             x = x.detach()
 
         for l in range(args.num_linear_layers-1):
-            print(l,x.shape, getattr(self, 'fc{}'.format(l)).weight.shape)
             x = non_linearity(getattr(self, 'fc{}'.format(l))(x))
             if l<args.num_linear_layers-2:
                 x = F.dropout(x, p=args.drop_rate, training=self.training)
