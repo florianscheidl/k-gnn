@@ -44,7 +44,7 @@ class MyPreTransform(object):
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long)
-        data.x = F.one_hot(data.x, num_classes=data.num_classes).to(torch.float)
+        data.x = F.one_hot(data.x, num_classes=data.y.size()[-1]).to(torch.float)
         return data
 
 
@@ -87,7 +87,7 @@ class Net(torch.nn.Module):
 
         print(type(dataset.data.x) if hasattr(dataset.data, 'x') else "Does not have x.")
         print(dir(dataset.data))
-        input_feature_dim = dataset.data.x.size()[-1]
+        input_feature_dim = dataset.data.x.size()
         print(input_feature_dim)
         # initial layer
         setattr(self,
