@@ -123,6 +123,7 @@ class Net(torch.nn.Module):
                     data.x = non_linearity(getattr(self, 'conv{}_{}'.format(j, i))(data.x, data.edge_index))
                 else:
                     data.x = non_linearity(getattr(self, 'conv{}_{}'.format(j, i))(data.x, getattr(data, 'edge_index_{}'.format(j+1))))
+                print(data.x.shape)
             x = data.x
             print(j,x.shape)
             if j==0:
