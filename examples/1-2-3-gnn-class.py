@@ -103,9 +103,7 @@ class Net(torch.nn.Module):
         # final_classification layers
         setattr(self, 'fc0', torch.nn.Linear(args.max_k*args.emb_dim, args.emb_dim))
         for l in range(1, args.num_linear_layers-1):
-            print("Simple algebra:", args.emb_dim, "div by", 2**l, "is", args.emb_dim//(2**l))
-            print("Middle dimensions:", int(args.emb_dim/(2^(l-1))), int(args.emb_dim/(2**l)))
-            setattr(self, 'fc{}'.format(l), torch.nn.Linear(int(args.emb_dim/(2^(l-1))), int(args.emb_dim/(2**l))))
+            setattr(self, 'fc{}'.format(l), torch.nn.Linear(int(args.emb_dim/(2**(l-1))), int(args.emb_dim/(2**l))))
         setattr(self, 'fc{}'.format(args.num_linear_layers-1), torch.nn.Linear(int(args.emb_dim/(2**(args.num_linear_layers-2))), dataset.num_classes))
 
     def reset_parameters(self):
