@@ -85,6 +85,8 @@ class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
 
+        print(type(dataset.data.x) if hasattr(dataset.data, 'x') else "Does not have x.")
+        print(dir(dataset.data))
         input_feature_dim = dataset.data.x.size()[-1]
         print(input_feature_dim)
         # initial layer
