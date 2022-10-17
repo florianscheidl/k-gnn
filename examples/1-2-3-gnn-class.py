@@ -139,6 +139,7 @@ class Net(torch.nn.Module):
             x = x.detach()
 
         for l in range(args.num_linear_layers-1):
+            print(l,x.shape, getattr(self, 'fc{}'.format(l)).weight.shape)
             x = non_linearity(getattr(self, 'fc{}'.format(l))(x))
             if l<args.num_linear_layers-2:
                 x = F.dropout(x, p=args.drop_rate, training=self.training)
