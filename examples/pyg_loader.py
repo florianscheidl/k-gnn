@@ -52,7 +52,7 @@ def load_pyg(name, dataset_dir, pre_transform=None, transform=None):
             name = 'IMDB-MULTI'
             dataset = TUDataset(dataset_dir, name, pre_transform=T.compose([T.Constant, pre_transform]))
         else:
-            dataset = TUDataset(dataset_dir, name[3:], pre_transform=pre_transform) if pre_transform is not None else TUDataset(dataset_dir, name[3:], transform=transform) # TODO: could also put the transform here.
+            dataset = TUDataset(dataset_dir, name[3:], pre_transform=pre_transform)
     elif name == 'Karate':
         dataset = KarateClub(pre_transform=pre_transform)
     elif 'Coauthor' in name:

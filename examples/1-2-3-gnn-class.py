@@ -44,7 +44,7 @@ class MyPreTransform(object):
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long)
-        data.x = F.one_hot(data.x, num_classes=136).to(torch.float)
+        data.x = F.one_hot(data.x, num_classes=data.num_classes).to(torch.float)
         return data
 
 
