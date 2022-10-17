@@ -85,7 +85,7 @@ class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
 
-        input_feature_dim = dataset.data.x.size()[1]
+        input_feature_dim = dataset.data.x.size()[-1]
         print(input_feature_dim)
         print(dataset.num_node_attributes)
         # initial layer
