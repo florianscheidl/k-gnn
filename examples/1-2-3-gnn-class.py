@@ -258,7 +258,7 @@ for i in range(args.num_repeats):
 
     print('---------------- Split {} ----------------'.format(i))
 
-    best_val_loss, test_acc = 100, 0
+    best_val_loss, test_acc = 100, torch.nan
     for epoch in range(1, args.epochs + 1):
         lr = scheduler.optimizer.param_groups[0]['lr']
         train_loss = train(epoch, train_loader, optimizer)
