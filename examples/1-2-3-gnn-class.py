@@ -45,16 +45,14 @@ class MyPreTransformNoFeatures(object):
         self.num_classes = num_classes
 
     def __call__(self, data):
-        print('Data number nodes', data.num_nodes)
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
-        print("Malkin number of nodes", data.num_nodes)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
         data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
-        data.num_node_features = self.num_classes
-        assert(data.num_node_features != 0.0)
+        data._real_num_node_features = self.num_classes
+        assert(data._real_num_node_features != 0.0)
         return data
 
 # class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
@@ -107,9 +105,9 @@ class Net(torch.nn.Module):
         super(Net, self).__init__()
 
         # initial layer
-        if dataset.data.num_node_features == 0.0:
-            UserWarning("No node features found!")
-        print("Num node features", dataset.data.num_node_features)
+        if hasattr(dataset.data, '_real_num_node_features'):
+            dataset.data.num_node_features = dataset.data._real_num_node_features
+        assert (dataset.data.num_node_features != 0.0)
         setattr(self,
                 'conv_initial',
                 GraphConv(dataset.data.num_node_features, args.initial_emb_dim))
