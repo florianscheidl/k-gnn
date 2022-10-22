@@ -94,7 +94,7 @@ dataset.data.iso_type_3 = F.one_hot(
     dataset.data.iso_type_3, num_classes=num_i_3).to(torch.float)
 
 num_i = [args.initial_emb_dim, num_i_2+args.emb_dim, num_i_3+args.emb_dim]
-print("num_i", num_i)
+# print("num_i", num_i)
 
 
 class Net(torch.nn.Module):
@@ -244,7 +244,7 @@ for i in range(args.num_repeats):
         train_dataset = dataset[~test_val_mask]
 
         print("Length dataset:", len(dataset),"Length test_dataset:", len(test_dataset),"Length val_dataset:", len(val_dataset),"Length train_dataset:", len(train_dataset))
-        print("Size attributes dataset:", dataset.data.x.size(),"Size attributes test_dataset:", test_dataset.data.x.size(),"Size attributes val_dataset:", val_dataset.data.x.size(),"Size attributes train_dataset:", train_dataset.data.x.size())
+        # print("Size attributes dataset:", dataset.data.x.size(),"Size attributes test_dataset:", test_dataset.data.x.size(),"Size attributes val_dataset:", val_dataset.data.x.size(),"Size attributes train_dataset:", train_dataset.data.x.size())
         # this would be 10-fold CV:
 
         # test_mask = torch.zeros(len(dataset), dtype=torch.bool)
@@ -265,7 +265,7 @@ for i in range(args.num_repeats):
         val_loss = val(val_loader)
         scheduler.step(val_loss)
         if best_val_loss >= val_loss:
-            print("Computing test accuracy")
+            # print("Computing test accuracy")
             test_acc = test(test_loader)
             best_val_loss = val_loss
         print('Epoch: {:03d}, LR: {:7f}, Train Loss: {:.7f}, '
