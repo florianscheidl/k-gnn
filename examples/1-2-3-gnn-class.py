@@ -52,6 +52,7 @@ class MyPreTransformNoFeatures(object):
         # print("NoFeatureTransform, data.x: ", data.x)
         data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
         data.num_node_features = self.num_classes
+        assert(data.num_node_features != 0.0)
         return data
 
 # class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
