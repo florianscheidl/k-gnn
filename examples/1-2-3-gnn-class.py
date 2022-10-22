@@ -56,10 +56,15 @@ class MyPreTransformNoFeatures(object):
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
-        data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long).to(torch.float).resize(1,1) # TODO: changed to taking degree instead of one-hot encoding of degrees.
+        print("NoFeatureTransform, data.x: ", data.x)
+        data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long).to(torch.float) # use degree instead of one-hot encoding of degree.
         # data.x = F.one_hot(data.x, num_classes=-1).to(torch.float)
         return data
 
+# class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
+#     def __call__(self, data):
+#         return not (data.num_nodes == 7 and data.num_edges == 12) and \
+#             data.num_nodes < 450
 
 BATCH = args.batch_size
 path = osp.join(
