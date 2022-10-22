@@ -228,10 +228,10 @@ for i in range(args.num_repeats):
 
     if not ((hasattr(dataset, 'test_mask') or hasattr(dataset, 'test_graph_index')) and (hasattr(dataset, 'val_mask') or hasattr(dataset, 'val_graph_index'))):
 
-        print(f'No predefined split, creating random train/test/val split with ratio {args.train_ratio}/{args.test_ratio}/{args.val_ratio}')
-
         # define a random train, validation and test mask
         [train_ratio, val_ratio, test_ratio] = args.data_split
+
+        print(f'No predefined split, creating random train/test/val split with ratio {train_ratio}/{test_ratio}/{val_ratio}')
 
         # create train, val and test mask
         test_val_mask = torch.full(size=len(dataset), fill_value=test_ratio+val_ratio, dtype=torch.float).bernoulli()
