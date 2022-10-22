@@ -21,7 +21,7 @@ parameters:
     value: 32
   epochs:
     value: 1 # default: 200
-  folds:
+  num_repeats:
     value: 1 # default: 10
 
   # NN parameters

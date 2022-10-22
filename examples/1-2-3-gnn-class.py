@@ -202,7 +202,7 @@ def test(loader):
 
 acc = []
 wandb.init()
-for i in range(args.folds):
+for i in range(args.num_repeats):
     model.reset_parameters()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     scheduler = torch.optim.lr_scheduler.StepLR(

@@ -29,7 +29,9 @@ def get_parser():
                         help='input batch size for training (default: 32)')
     parser.add_argument('--epochs', type=int, default=100,
                         help='number of epochs to train (default: 100)')
-    parser.add_argument('--folds', type=int, default=10,
+    parser.add_argument('--num_repeats', type=int, default=10,
+                        help='The number of folds to run on in cross validation experiments')
+    parser.add_argument('--data_split', type=int, default=[0.8,0.1,0.1],
                         help='The number of folds to run on in cross validation experiments')
 
     # NN design
@@ -68,6 +70,8 @@ def get_parser():
     parser.add_argument('--lr_scheduler_step_size', type=float, default=30,
                         help='Steps after which to reduce the LR: (default: 30)')
 
-
+    # Miscellaneous
+    parser.add_argument('--no_train', type=bool, default=False,
+                        help='disables CUDA training')
 
     return parser
