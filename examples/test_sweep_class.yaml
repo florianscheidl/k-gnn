@@ -1,4 +1,4 @@
-program: 1-2-3-gnn-class.py
+program: examples/1-2-3-gnn-class.py
 command:
   - ${interpreter}
   - "-m"
