@@ -51,10 +51,7 @@ class MyPreTransformNoFeatures(object):
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
         data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
-        # try:
-        #
-        # except:
-        #     raise Exception("Too many classes, change num_classes to a smaller value.")
+        data.num_node_features = self.num_classes
         return data
 
 # class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
