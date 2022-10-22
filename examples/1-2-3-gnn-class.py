@@ -101,18 +101,18 @@ num_i = [args.initial_emb_dim, num_i_2+args.emb_dim, num_i_3+args.emb_dim]
 
 
 class Net(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, in_dataset):
         super(Net, self).__init__()
 
         # initial layer
-        if hasattr(dataset.data, '_real_num_node_features'):
-            setattr(dataset,'num_node_features', dataset.data._real_num_node_features)
+        if hasattr(in_dataset.data, '_real_num_node_features'):
+            setattr(in_dataset,'num_node_features', in_dataset.data._real_num_node_features)
         else:
-            print("No _real_num_node_features attribute found in dataset.data.")
-        assert (dataset.data.num_node_features != 0.0)
+            print("No _real_num_node_features attribute found in in_dataset.data.")
+        assert (in_dataset.data.num_node_features != 0.0)
         setattr(self,
                 'conv_initial',
-                GraphConv(dataset.data.num_node_features, args.initial_emb_dim))
+                GraphConv(in_dataset.data.num_node_features, args.initial_emb_dim))
 
         # args.num_layers_per_dim layers per dimension j
         for j in range(args.max_k):
@@ -129,7 +129,7 @@ class Net(torch.nn.Module):
         for l in range(1, args.num_linear_layers-1):
             setattr(self, 'fc{}'.format(l), torch.nn.Linear(int(args.emb_dim/(2**(l-1))), int(args.emb_dim/(2**l))))
         if args.num_linear_layers > 1:
-            setattr(self, 'fc{}'.format(args.num_linear_layers-1), torch.nn.Linear(int(args.emb_dim/(2**(args.num_linear_layers-2))), dataset.num_classes))
+            setattr(self, 'fc{}'.format(args.num_linear_layers-1), torch.nn.Linear(int(args.emb_dim/(2**(args.num_linear_layers-2))), in_dataset.num_classes))
 
     def reset_parameters(self):
         for (name, module) in self._modules.items():
@@ -172,7 +172,7 @@ class Net(torch.nn.Module):
 
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = Net().to(device)
+model = Net(in_dataset=dataset).to(device)
 
 
 def train(epoch, loader, optimizer):
