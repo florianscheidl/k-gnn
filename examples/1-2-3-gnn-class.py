@@ -104,6 +104,8 @@ class Net(torch.nn.Module):
         super(Net, self).__init__()
 
         # initial layer
+        if dataset.data.num_node_features == 0:
+            UserWarning("No node features found!")
         setattr(self,
                 'conv_initial',
                 GraphConv(dataset.data.num_node_features, args.initial_emb_dim))
