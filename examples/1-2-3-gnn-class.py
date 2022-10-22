@@ -264,6 +264,7 @@ for i in range(args.num_repeats):
         val_loss = val(val_loader)
         scheduler.step(val_loss)
         if best_val_loss >= val_loss:
+            print("Computing test accuracy")
             test_acc = test(test_loader)
             best_val_loss = val_loss
         print('Epoch: {:03d}, LR: {:7f}, Train Loss: {:.7f}, '
