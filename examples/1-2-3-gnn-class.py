@@ -39,18 +39,6 @@ class MyFilter(object):
     def __call__(self, data):
         return data.num_nodes <= 70
 
-def num_classes(data) -> int:
-    r"""Returns the number of classes in the dataset."""
-    y = data.y
-    if y is None:
-        return 0
-    elif y.numel() == y.size(0) and not torch.is_floating_point(y):
-        return int(data.y.max()) + 1
-    elif y.numel() == y.size(0) and torch.is_floating_point(y):
-        return torch.unique(y).numel()
-    else:
-        return data.y.size(-1)
-
 class MyPreTransformNoFeatures(object):
     def __call__(self, data):
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
@@ -59,7 +47,7 @@ class MyPreTransformNoFeatures(object):
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long).to(torch.float) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
         try:
-            data.x = F.one_hot(data.x, num_classes=100).to(torch.float)
+            data.x = F.one_hot(data.x, num_classes=50).to(torch.float)
         except:
             raise Exception("Too many classes, change num_classes to a smaller value.")
         return data
