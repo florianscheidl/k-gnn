@@ -51,7 +51,7 @@ class MyPreTransformNoFeatures(object):
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
         data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
-        data._real_num_node_features = self.num_classes
+        setattr(data, '_real_num_node_features', self.num_classes)
         assert(data._real_num_node_features != 0.0)
         return data
 
@@ -67,11 +67,11 @@ path = osp.join(
 # load and transform dataset
 
 if args.dataset == 'TU_PROTEINS':
-    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=100)])
+    pre_transform = MyPreTransformNoFeatures(num_classes=100)
 elif args.dataset == 'TU_REDDIT-MULTI-5K':
-    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=5000)])
+    pre_transform = MyPreTransformNoFeatures(num_classes=100)
 elif args.dataset == 'TU_IMDB-MULTI':
-    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=200)])
+    pre_transform = MyPreTransformNoFeatures(num_classes=100)
 else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
 
@@ -106,7 +106,9 @@ class Net(torch.nn.Module):
 
         # initial layer
         if hasattr(dataset.data, '_real_num_node_features'):
-            dataset.data.num_node_features = dataset.data._real_num_node_features
+            setattr(dataset,'num_node_features', dataset.data._real_num_node_features)
+        else:
+            print("No _real_num_node_features attribute found in dataset.data.")
         assert (dataset.data.num_node_features != 0.0)
         setattr(self,
                 'conv_initial',
