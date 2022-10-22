@@ -50,7 +50,7 @@ def load_pyg(name, dataset_dir, pre_transform=None, transform=None):
         # TU_IMDB doesn't have node features
         if name[3:] == 'IMDB':
             name = 'IMDB-MULTI'
-            dataset = TUDataset(dataset_dir, name, pre_transform=T.compose([T.Constant, pre_transform]))
+            dataset = TUDataset(dataset_dir, name, pre_transform=pre_transform)
         else:
             dataset = TUDataset(dataset_dir, name[3:], pre_transform=pre_transform)
     elif name == 'Karate':
