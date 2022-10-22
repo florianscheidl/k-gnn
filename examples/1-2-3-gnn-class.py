@@ -242,7 +242,7 @@ for i in range(args.num_repeats):
         val_dataset = test_val_dataset[~test_mask]
         train_dataset = dataset[~test_val_mask]
 
-        print("Length dataset:", len(dataset),"Size test_dataset:", test_dataset.size(),"Size val_dataset:", val_dataset.size(),"Size train_dataset:", train_dataset.size())
+        print("Length dataset:", dataset.data.size(),"Size test_dataset:", test_dataset.data.size(),"Size val_dataset:", val_dataset.data.size(),"Size train_dataset:", train_dataset.data.size())
         # this would be 10-fold CV:
 
         # test_mask = torch.zeros(len(dataset), dtype=torch.bool)
