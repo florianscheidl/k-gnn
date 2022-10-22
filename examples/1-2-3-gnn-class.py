@@ -15,8 +15,10 @@ from torch_scatter import scatter_mean
 from torch_geometric.datasets import TUDataset
 from torch_geometric.utils import degree
 import torch_geometric.transforms as T
+from sklearn.model_selection import train_test_split
 
-from k_gnn import DataLoader, GraphConv, avg_pool
+from k_gnn import DataLoader, GraphConv
+import k_gnn.pool as pool
 from pyg_loader import load_pyg, load_ogb
 from k_gnn import TwoMalkin, ConnectedThreeMalkin
 from get_parser import get_parser
@@ -65,7 +67,7 @@ path = osp.join(
 
 
 # load and transform dataset
-if args.dataset.startswith('TU_IMDB') or args.dataset=='TU_PROTEINS':
+if args.dataset.startswith('TU_IMDB') or args.dataset=='TU_REDDIT-MULTI-5K':
     pre_transform=T.Compose([MyPreTransformNoFeatures()])
 else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
@@ -142,7 +144,8 @@ class Net(torch.nn.Module):
             else:
                 x_per_dim.append(scatter_mean(data.x, getattr(data, f'batch_{j+1}'), dim=0))
             if j<args.max_k-1:
-                data.x = avg_pool(x, getattr(data, f'assignment_index_{j+2}'))
+                pool_func = getattr(pool, f'{args.pool_func}')
+                data.x = pool_func(x, getattr(data, f'assignment_index_{j+2}'))
                 data.x = torch.cat([data.x, getattr(data, f'iso_type_{j+2}')], dim=1)
             else:
                 x = torch.cat(x_per_dim, dim=1)
@@ -210,24 +213,35 @@ for i in range(args.folds):
     elif hasattr(dataset, 'test_graph_index'):
         test_mask = dataset.test_graph_index
     else:
-        test_mask = torch.zeros(len(dataset), dtype=torch.bool)
-        n = len(dataset) // 10
-        test_mask[i * n:(i + 1) * n] = 1
-    test_dataset = dataset[test_mask]
+        # define a random train, validation and test mask
+        [train_ratio, val_ratio, test_ratio] = args.data_split
+        train_mask, test_val_index = train_test_split(list(range(len(dataset))), test_size=val_ratio + test_ratio,
+                                                       shuffle=True, random_state=args.seed)
+        val_mask, test_mask = train_test_split(test_val_index, test_size=test_ratio / (val_ratio + test_ratio), shuffle=True, random_state=args.seed)
 
-    train_dataset = dataset[~test_mask]
+        # this would be 10-fold CV:
+
+        # test_mask = torch.zeros(len(dataset), dtype=torch.bool)
+        # n = len(dataset) // 10
+        # test_mask[i * n:(i + 1) * n] = 1
+
+    test_dataset = dataset[test_mask]
+    split_train_dataset = dataset[~test_mask]
 
     if hasattr(dataset, 'val_mask'):
         val_mask = dataset.val_mask
+        val_dataset = split_train_dataset[val_mask]
+        train_dataset = split_train_dataset[~val_mask]
     elif hasattr(dataset, 'val_graph_index'):
         val_mask = dataset.val_graph_index
+        val_dataset = split_train_dataset[val_mask]
+        train_dataset = split_train_dataset[~val_mask]
+    elif (not hasattr(dataset, 'test_mask') and not hasattr(dataset, 'test_graph_index')):
+        val_dataset = dataset[val_mask]
+        train_dataset = dataset[train_mask]
     else:
-        n = len(train_dataset) // 10
-        val_mask = torch.zeros(len(train_dataset), dtype=torch.bool)
-        val_mask[i * n:(i + 1) * n] = 1
-    val_dataset = train_dataset[val_mask]
+        raise ValueError('Only test, but no validation set found')
 
-    train_dataset = train_dataset[~val_mask]
 
     val_loader = DataLoader(val_dataset, batch_size=BATCH)
     test_loader = DataLoader(test_dataset, batch_size=BATCH)
