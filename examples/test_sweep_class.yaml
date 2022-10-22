@@ -1,7 +1,6 @@
 program: examples/1-2-3-gnn-class.py
 command:
   - ${interpreter}
-  - "-m"
   - ${program}
   - ${args} # args
 method: random
@@ -12,7 +11,7 @@ parameters:
     values: [0]
 
   # dataset:
-  dataset_name:
+  dataset:
     value: TU_MUTAG #  [TU_MUTAG, TU_NCI109, TU_PROTEINS, TU_PTC, TU_ENZYMES, TU_IMDB-MULTI, TU_REDDIT-MULTI-5K]
   eval_metric:
     value: accuracy # specified for ogb datasets, for others: accuracy or others.

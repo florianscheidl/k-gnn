@@ -13,7 +13,7 @@ def get_parser():
     parser.add_argument('--no-train', default=False)
 
     # Dataset config
-    parser.add_argument('--dataset_name', type=str, default="TU_MUTAG",
+    parser.add_argument('--dataset', type=str, default="TU_MUTAG",
                         help='dataset name (default: TU_MUTAG)')
     parser.add_argument('--data_format', type=str, default="PyG",
                         help='dataset format (default: PyG)')
