@@ -56,8 +56,8 @@ class MyPreTransformNoFeatures(object):
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
-        data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long)
-        data.x = F.one_hot(data.x, num_classes=-1).to(torch.float)
+        data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long).to(torch.float) # TODO: changed to taking degree instead of one-hot encoding of degrees.
+        # data.x = F.one_hot(data.x, num_classes=-1).to(torch.float)
         return data
 
 
