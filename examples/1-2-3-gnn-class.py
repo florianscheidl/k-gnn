@@ -210,23 +210,12 @@ for i in range(args.num_repeats):
 
     if hasattr(dataset, 'test_mask'):
         test_mask = dataset.test_mask
+        test_dataset = dataset[test_mask]
+        split_train_dataset = dataset[~test_mask]
     elif hasattr(dataset, 'test_graph_index'):
         test_mask = dataset.test_graph_index
-    else:
-        # define a random train, validation and test mask
-        [train_ratio, val_ratio, test_ratio] = args.data_split
-        train_mask, test_val_index = train_test_split(list(range(len(dataset))), test_size=val_ratio + test_ratio,
-                                                       shuffle=True, random_state=args.seed)
-        val_mask, test_mask = train_test_split(test_val_index, test_size=test_ratio / (val_ratio + test_ratio), shuffle=True, random_state=args.seed)
-
-        # this would be 10-fold CV:
-
-        # test_mask = torch.zeros(len(dataset), dtype=torch.bool)
-        # n = len(dataset) // 10
-        # test_mask[i * n:(i + 1) * n] = 1
-
-    test_dataset = dataset[test_mask]
-    split_train_dataset = dataset[~test_mask]
+        test_dataset = dataset[test_mask]
+        split_train_dataset = dataset[~test_mask]
 
     if hasattr(dataset, 'val_mask'):
         val_mask = dataset.val_mask
@@ -236,12 +225,24 @@ for i in range(args.num_repeats):
         val_mask = dataset.val_graph_index
         val_dataset = split_train_dataset[val_mask]
         train_dataset = split_train_dataset[~val_mask]
-    elif (not hasattr(dataset, 'test_mask') and not hasattr(dataset, 'test_graph_index')):
-        val_dataset = dataset[val_mask]
-        train_dataset = dataset[train_mask]
-    else:
-        raise ValueError('Only test, but no validation set found')
 
+    if not (hasattr(dataset, 'test_mask') or hasattr(dataset, 'test_graph_index')) and (hasattr(dataset, 'val_mask') or hasattr(dataset, 'val_graph_index')):
+
+        # define a random train, validation and test mask
+        [train_ratio, val_ratio, test_ratio] = args.data_split
+
+        # create train, val and test mask
+        test_val_mask = torch.full(size=len(dataset), fill_value=test_ratio+val_ratio, dtype=torch.float).bernoulli()
+        test_val_dataset = dataset[test_val_mask]
+        test_mask = torch.full(size=len(test_val_dataset), fill_value=test_ratio/(test_ratio+val_ratio), dtype=torch.float).bernoulli()
+        test_dataset = test_val_dataset[test_mask]
+        val_dataset = test_val_dataset[~test_mask]
+        train_dataset = dataset[~test_val_mask]
+        # this would be 10-fold CV:
+
+        # test_mask = torch.zeros(len(dataset), dtype=torch.bool)
+        # n = len(dataset) // 10
+        # test_mask[i * n:(i + 1) * n] = 1
 
     val_loader = DataLoader(val_dataset, batch_size=BATCH)
     test_loader = DataLoader(test_dataset, batch_size=BATCH)
