@@ -58,4 +58,6 @@ parameters:
     value: 10
   lr_scheduler_min:
     value: 1e-5
+  lr_scheduler_step_size:
+    value: 30
 

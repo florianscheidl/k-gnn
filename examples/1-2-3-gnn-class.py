@@ -205,8 +205,8 @@ wandb.init()
 for i in range(args.folds):
     model.reset_parameters()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode='min', factor=args.lr_scheduler_decay_rate, patience=args.lr_scheduler_patience, min_lr=args.lr_scheduler_min)
+    scheduler = torch.optim.lr_scheduler.StepLR(
+        optimizer, gamma=args.lr_scheduler_decay_rate, step_size=args.lr_scheduler_step_size)
 
     if hasattr(dataset, 'test_mask'):
         test_mask = dataset.test_mask

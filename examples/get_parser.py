@@ -65,6 +65,9 @@ def get_parser():
                         help='patience for `ReduceLROnPlateau` lr decay (default: 10)')
     parser.add_argument('--lr_scheduler_min', type=float, default=0.00001,
                         help='min LR for `ReduceLROnPlateau` lr decay (default: 1e-5)')
+    parser.add_argument('--lr_scheduler_step_size', type=float, default=30,
+                        help='Steps after which to reduce the LR: (default: 30)')
+
 
 
     return parser
