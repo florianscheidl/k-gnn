@@ -68,7 +68,7 @@ path = osp.join(
 if args.dataset == 'TU_PROTEINS':
     pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=100)])
 elif args.dataset == 'TU_REDDIT-MULTI-5K':
-    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=300)])
+    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=400)])
 elif args.dataset == 'TU_IMDB-MULTI':
     pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=200)])
 else:
