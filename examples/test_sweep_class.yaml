@@ -32,7 +32,7 @@ parameters:
   emb_dim:
     value: 8
   pool_func:
-    value: ave_pool # alternatively: max_pool, add_pool
+    value: add_pool # alternatively: max_pool, add_pool
   num_linear_layers:
     value: 1
 
