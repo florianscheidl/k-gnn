@@ -94,6 +94,7 @@ dataset.data.iso_type_3 = F.one_hot(
     dataset.data.iso_type_3, num_classes=num_i_3).to(torch.float)
 
 num_i = [args.initial_emb_dim, num_i_2+args.emb_dim, num_i_3+args.emb_dim]
+print("num_i", num_i)
 
 
 class Net(torch.nn.Module):
@@ -240,6 +241,8 @@ for i in range(args.num_repeats):
         test_dataset = test_val_dataset[test_mask]
         val_dataset = test_val_dataset[~test_mask]
         train_dataset = dataset[~test_val_mask]
+
+        print("Size dataset:", dataset.size(),"Size test_dataset:", test_dataset.size(),"Size val_dataset:", val_dataset.size(),"Size train_dataset:", train_dataset.size())
         # this would be 10-fold CV:
 
         # test_mask = torch.zeros(len(dataset), dtype=torch.bool)
