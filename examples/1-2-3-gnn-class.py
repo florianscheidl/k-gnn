@@ -234,9 +234,9 @@ for i in range(args.num_repeats):
         print(f'No predefined split, creating random train/test/val split with ratio {train_ratio}/{test_ratio}/{val_ratio}')
 
         # create train, val and test mask
-        test_val_mask = torch.full(size=len(dataset), fill_value=test_ratio+val_ratio, dtype=torch.float).bernoulli()
+        test_val_mask = torch.full(size=(len(dataset),), fill_value=test_ratio+val_ratio, dtype=torch.float).bernoulli()
         test_val_dataset = dataset[test_val_mask]
-        test_mask = torch.full(size=len(test_val_dataset), fill_value=test_ratio/(test_ratio+val_ratio), dtype=torch.float).bernoulli()
+        test_mask = torch.full(size=(len(test_val_dataset),), fill_value=test_ratio/(test_ratio+val_ratio), dtype=torch.float).bernoulli()
         test_dataset = test_val_dataset[test_mask]
         val_dataset = test_val_dataset[~test_mask]
         train_dataset = dataset[~test_val_mask]
