@@ -41,6 +41,7 @@ def collate(data_list):
             batch.batch_2.append(torch.full((N_2, ), i, dtype=torch.long))
 
         if 'edge_index_3' in data:
+            print("Data assignment index", data.assignment_index_3[1])
             N_3 = data.assignment_index_3[1].max().item() + 1
             batch.edge_index_3.append(data.edge_index_3 + cumsum_3)
             batch.assignment_index_3.append(

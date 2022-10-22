@@ -57,7 +57,7 @@ class MyPreTransformNoFeatures(object):
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long)
-        data.x = F.one_hot(data.x, num_classes=num_classes(data)).to(torch.float)
+        data.x = F.one_hot(data.x, num_classes=-1).to(torch.float)
         return data
 
 
@@ -67,7 +67,7 @@ path = osp.join(
 
 
 # load and transform dataset
-if args.dataset.startswith('TU_IMDB') or args.dataset=='TU_REDDIT-MULTI-5K':
+if args.dataset in ['TU_PROTEINS', 'TU_REDDIT-MULTI-5K', 'TU_IMDB-MULTI']:
     pre_transform=T.Compose([MyPreTransformNoFeatures()])
 else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
