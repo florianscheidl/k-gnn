@@ -253,6 +253,7 @@ for i in range(args.num_repeats):
 
     val_loader = DataLoader(val_dataset, batch_size=BATCH)
     test_loader = DataLoader(test_dataset, batch_size=BATCH)
+    print("INVESTIGATE TEST LOADER: ", test_loader.dataset.data.y, test_loader.dataset.data.x)
     train_loader = DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
 
     print('---------------- Split {} ----------------'.format(i))
