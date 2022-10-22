@@ -12,7 +12,7 @@ parameters:
 
   # dataset:
   dataset:
-    values: [TU_PROTEINS, TU_PTC_FM, TU_ENZYMES, TU_IMDB-MULTI, TU_REDDIT-MULTI-5K]
+    values: [TU_PTC_FM, TU_ENZYMES, TU_IMDB-MULTI, TU_REDDIT-MULTI-5K]
   eval_metric:
     value: accuracy # specified for ogb datasets, for others: accuracy or others.
 
