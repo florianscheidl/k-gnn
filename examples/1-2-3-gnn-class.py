@@ -226,7 +226,7 @@ for i in range(args.num_repeats):
         val_dataset = split_train_dataset[val_mask]
         train_dataset = split_train_dataset[~val_mask]
 
-    if not (hasattr(dataset, 'test_mask') or hasattr(dataset, 'test_graph_index')) and (hasattr(dataset, 'val_mask') or hasattr(dataset, 'val_graph_index')):
+    if not ((hasattr(dataset, 'test_mask') or hasattr(dataset, 'test_graph_index')) and (hasattr(dataset, 'val_mask') or hasattr(dataset, 'val_graph_index'))):
 
         # define a random train, validation and test mask
         [train_ratio, val_ratio, test_ratio] = args.data_split
