@@ -45,9 +45,11 @@ class MyPreTransformNoFeatures(object):
         self.num_classes = num_classes
 
     def __call__(self, data):
+        print('Data number nodes', data.num_nodes)
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
+        print("Malkin number of nodes", data.num_nodes)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
         data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
