@@ -40,13 +40,17 @@ class MyFilter(object):
         return data.num_nodes <= 70
 
 class MyPreTransformNoFeatures(object):
+
+    def __init__(self, num_classes):
+        self.num_classes = num_classes
+
     def __call__(self, data):
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
-        data.x = F.one_hot(data.x, num_classes=200).to(torch.float)
+        data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
         # try:
         #
         # except:
@@ -62,10 +66,14 @@ BATCH = args.batch_size
 path = osp.join(
     osp.dirname(osp.realpath(__file__)), '..', 'data', '1_2_3_gnn', args.dataset)
 
-
 # load and transform dataset
-if args.dataset in ['TU_PROTEINS', 'TU_REDDIT-MULTI-5K', 'TU_IMDB-MULTI']:
-    pre_transform=T.Compose([MyPreTransformNoFeatures()])
+
+if args.dataset == 'TU_PROTEINS':
+    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=100)])
+elif args.dataset == 'TU_REDDIT-MULTI-5K':
+    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=300)])
+elif args.dataset == 'TU_IMDB-MULTI':
+    pre_transform = T.Compose([MyPreTransformNoFeatures(num_classes=200)])
 else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
 
