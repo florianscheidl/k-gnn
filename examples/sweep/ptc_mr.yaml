@@ -1,0 +1,64 @@
+program: examples/1-2-3-gnn-class.py
+command:
+  - ${interpreter}
+  - ${program}
+  - ${args} # args
+method: grid
+parameters:
+
+  # Randomness
+  seed:
+    values: [0,1,2]
+
+  # dataset:
+  dataset:
+    value: TU_PTC_MR
+  eval_metric:
+    value: accuracy # specified for ogb datasets, for others: accuracy or others.
+
+  # training
+  batch_size:
+    value: 16
+  epochs:
+    value: 150 # default: 200
+  num_repeats:
+    value: 1 # default: 10
+
+  # NN parameters
+  nonlinearity:
+    value: prelu
+
+  # GNN Specific params
+  emb_dim:
+    value: 64
+  pool_func:
+    value: add_pool # alternatively: max_pool, add_pool
+  num_linear_layers:
+    value: 2
+
+  # Model-specific GNN params:
+  num_layers_per_dim:
+    value: 2
+  initial_emb_dim:
+    value: 32
+  max_k:
+    value: 3
+
+  # Regularization
+  drop_rate:
+    value: '0.0'
+
+  # Optimizer
+  lr:
+    value: '0.001'
+  lr_scheduler:
+    value: StepLR
+  lr_scheduler_decay_steps:
+    value: 150
+  lr_scheduler_decay_rate:
+    value: '0.5'
+  lr_scheduler_patience:
+    value: 10
+  lr_scheduler_min_lr:
+    value: 1e-5
+
