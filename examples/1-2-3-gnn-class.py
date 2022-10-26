@@ -271,7 +271,7 @@ for i in range(args.num_repeats):
         lr = scheduler.get_last_lr()[0]
         train_loss = train(epoch, train_loader, optimizer)
         val_loss = val(val_loader)
-        scheduler.step(val_loss)
+        scheduler.step()
         if best_val_loss >= val_loss:
             # print("Computing test accuracy")
             test_acc = test(test_loader)
