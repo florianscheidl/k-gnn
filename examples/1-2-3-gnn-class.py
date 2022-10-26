@@ -268,7 +268,8 @@ for i in range(args.num_repeats):
 
     best_val_loss, test_acc = 100, -1
     for epoch in range(1, args.epochs + 1):
-        lr = scheduler.optimizer.param_groups[0]['lr']
+        scheduler.step(epoch)
+        lr = scheduler.get_lr()
         train_loss = train(epoch, train_loader, optimizer)
         val_loss = val(val_loader)
         scheduler.step(val_loss)
