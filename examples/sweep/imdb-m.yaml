@@ -12,13 +12,13 @@ parameters:
 
   # dataset:
   dataset:
-    value: TU_MUTAG
+    value: TU_IMDB-MULTI
   eval_metric:
     value: accuracy # specified for ogb datasets, for others: accuracy or others.
 
   # training
   batch_size:
-    value: 32
+    value: 128
   epochs:
     value: 150 # default: 200
   num_repeats:
@@ -46,15 +46,15 @@ parameters:
 
   # Regularization
   drop_rate:
-    values: ['0.25', '0.5']
+    values: ['0.5', '0.25']
 
   # Optimizer
   lr:
-    value: '0.01'
+    value: '0.0005'
   lr_scheduler:
     value: StepLR
   lr_scheduler_decay_steps:
-    value: 120
+    value: 20
   lr_scheduler_decay_rate:
     value: '0.5'
   lr_scheduler_patience:

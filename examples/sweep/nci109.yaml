@@ -18,7 +18,7 @@ parameters:
 
   # training
   batch_size:
-    value: 16
+    value: 32
   epochs:
     value: 150 # default: 200
   num_repeats:
@@ -26,7 +26,7 @@ parameters:
 
   # NN parameters
   nonlinearity:
-    value: prelu
+    value: relu
 
   # GNN Specific params
   emb_dim:
@@ -38,15 +38,15 @@ parameters:
 
   # Model-specific GNN params:
   num_layers_per_dim:
-    value: 2
+    values: [2,3]
   initial_emb_dim:
     value: 32
   max_k:
-    value: 3
+    values: [2,3]
 
   # Regularization
   drop_rate:
-    value: '0.0'
+    values: ['0.0', '0.25']
 
   # Optimizer
   lr:
@@ -54,7 +54,7 @@ parameters:
   lr_scheduler:
     value: StepLR
   lr_scheduler_decay_steps:
-    value: 150
+    value: 20
   lr_scheduler_decay_rate:
     value: '0.5'
   lr_scheduler_patience:

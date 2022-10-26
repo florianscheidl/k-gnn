@@ -12,13 +12,13 @@ parameters:
 
   # dataset:
   dataset:
-    value: TU_PTC_MR
+    value: TU_NCI1
   eval_metric:
     value: accuracy # specified for ogb datasets, for others: accuracy or others.
 
   # training
   batch_size:
-    value: 16
+    value: 32
   epochs:
     value: 150 # default: 200
   num_repeats:
@@ -26,11 +26,11 @@ parameters:
 
   # NN parameters
   nonlinearity:
-    value: prelu
+    value: relu
 
   # GNN Specific params
   emb_dim:
-    value: 64
+    value: 16
   pool_func:
     value: add_pool # alternatively: max_pool, add_pool
   num_linear_layers:
@@ -38,15 +38,15 @@ parameters:
 
   # Model-specific GNN params:
   num_layers_per_dim:
-    value: 2
+    values: [2,3]
   initial_emb_dim:
-    value: 32
+    value: 8
   max_k:
-    value: 3
+    values: [2,3]
 
   # Regularization
   drop_rate:
-    value: '0.0'
+    values: ['0.25', '0.5']
 
   # Optimizer
   lr:
@@ -54,7 +54,7 @@ parameters:
   lr_scheduler:
     value: StepLR
   lr_scheduler_decay_steps:
-    value: 150
+    value: 20
   lr_scheduler_decay_rate:
     value: '0.5'
   lr_scheduler_patience:

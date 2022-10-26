@@ -66,12 +66,10 @@ path = osp.join(
 
 # load and transform dataset
 
-if args.dataset == 'TU_PROTEINS':
-    pre_transform = MyPreTransformNoFeatures(num_classes=100)
-elif args.dataset == 'TU_REDDIT-MULTI-5K':
-    pre_transform = MyPreTransformNoFeatures(num_classes=100)
-elif args.dataset == 'TU_IMDB-MULTI':
-    pre_transform = MyPreTransformNoFeatures(num_classes=100)
+if args.dataset.startswith('TU_REDDIT'):
+    pre_transform = MyPreTransformNoFeatures(num_classes=8000)
+elif args.dataset.startswith('TU_IMDB'):
+    pre_transform = MyPreTransformNoFeatures(num_classes=352)
 else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
 
