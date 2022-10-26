@@ -64,7 +64,8 @@ class ConstantPreTransform(object):
         data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
         data = TwoMalkin()(data)
         data = ConnectedThreeMalkin()(data)
-        data = T.constant.Constant(value=self.value)(data).to(torch.float)
+        data = T.constant.Constant(value=self.value)(data)
+        data.x = data.x.float()
         return data
 
 # class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
