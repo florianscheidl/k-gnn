@@ -46,11 +46,11 @@ parameters:
 
   # Regularization
   drop_rate:
-    values: ['0.0', '0.25']
+    values: ['0.0']
 
   # Optimizer
   lr:
-    value: '0.001'
+    values: ['0.001', '0.005']
   lr_scheduler_decay_steps:
     value: 50
   lr_scheduler_decay_rate:
