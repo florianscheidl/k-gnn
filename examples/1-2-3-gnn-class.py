@@ -109,6 +109,7 @@ class Net(torch.nn.Module):
             setattr(in_dataset,'num_node_features', in_dataset.data._real_num_node_features)
         else:
             print("No _real_num_node_features attribute found in in_dataset.data.")
+        print("in_dataset.num_node_features: ", in_dataset.num_node_features)
         assert (in_dataset.data.num_node_features != 0.0)
         setattr(self,
                 'conv_initial',
