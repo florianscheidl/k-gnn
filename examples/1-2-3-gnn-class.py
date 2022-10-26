@@ -40,7 +40,7 @@ class MyFilter(object):
         return data.num_nodes <= 70
 
 class MyPreTransformNoFeatures(object):
-
+# one-hot degree encoding
     def __init__(self, num_classes):
         self.num_classes = num_classes
 
@@ -55,6 +55,18 @@ class MyPreTransformNoFeatures(object):
         assert(data._real_num_node_features != 0.0)
         return data
 
+class ConstantPreTransform(object):
+# constant (non-informative) features
+    def __init__(self, value):
+        self.value = value
+
+    def __call__(self, data):
+        data.x = torch.zeros((data.num_nodes, 1), dtype=torch.float)
+        data = TwoMalkin()(data)
+        data = ConnectedThreeMalkin()(data)
+        data = T.constant.Constant(value=self.value)(data).to(torch.float)
+        return data
+
 # class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
 #     def __call__(self, data):
 #         return not (data.num_nodes == 7 and data.num_edges == 12) and \
@@ -67,7 +79,7 @@ path = osp.join(
 # load and transform dataset
 
 if args.dataset.startswith('TU_REDDIT'):
-    pre_transform = MyPreTransformNoFeatures(num_classes=8000)
+    pre_transform = ConstantPreTransform(value=1)
 elif args.dataset.startswith('TU_IMDB'):
     pre_transform = MyPreTransformNoFeatures(num_classes=352)
 else:
