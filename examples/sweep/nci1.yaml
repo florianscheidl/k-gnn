@@ -51,14 +51,10 @@ parameters:
   # Optimizer
   lr:
     value: '0.001'
-  lr_scheduler:
-    value: StepLR
   lr_scheduler_decay_steps:
     value: 20
   lr_scheduler_decay_rate:
     value: '0.5'
-  lr_scheduler_patience:
-    value: 10
   lr_scheduler_min_lr:
     value: 1e-5
 
