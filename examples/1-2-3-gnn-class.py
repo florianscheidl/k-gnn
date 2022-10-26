@@ -268,7 +268,7 @@ for i in range(args.num_repeats):
 
     best_val_loss, test_acc = 100, -1
     for epoch in range(1, args.epochs + 1):
-        lr = scheduler.get_last_lr()
+        lr = scheduler.get_last_lr()[0]
         train_loss = train(epoch, train_loader, optimizer)
         val_loss = val(val_loader)
         scheduler.step(val_loss)
@@ -279,7 +279,7 @@ for i in range(args.num_repeats):
         print('Epoch: {:03d}, LR: {:7f}, Train Loss: {:.7f}, '
               'Val Loss: {:.7f}, Test Acc: {:.7f}'.format(
                   epoch, lr, train_loss, val_loss, test_acc))
-        wandb.log({'epoch': epoch, 'train_loss': train_loss, 'val_loss': val_loss, 'test_acc': test_acc})
+        wandb.log({'epoch': epoch, 'train_loss': train_loss, 'val_loss': val_loss, 'test_acc': test_acc, 'lr': lr})
     acc.append(test_acc)
 acc = torch.tensor(acc)
 print('---------------- Final Result ----------------')
