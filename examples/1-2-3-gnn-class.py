@@ -35,9 +35,10 @@ np.random.seed(args.seed)
 random.seed(args.seed)
 
 # TODO: We omit the pre_filter!
-class MyFilter(object):
+class ProteinFilter(object): # see https://github.com/chrsmrrs/k-gnn/blob/master/examples/1-2-3-proteins.py
     def __call__(self, data):
-        return data.num_nodes <= 70
+        return not (data.num_nodes == 7 and data.num_edges == 12) and \
+            data.num_nodes < 450
 
 class MyPreTransformNoFeatures(object):
 # one-hot degree encoding
@@ -68,10 +69,6 @@ class ConstantPreTransform(object):
         data.x = data.x.float()
         return data
 
-# class PROTEINS_Filter(object): # TODO: This was provided by the authors of k-GNN, needs to be investigated.
-#     def __call__(self, data):
-#         return not (data.num_nodes == 7 and data.num_edges == 12) and \
-#             data.num_nodes < 450
 
 BATCH = args.batch_size
 path = osp.join(
@@ -87,7 +84,10 @@ else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
 
 if args.data_format == 'PyG':
-    dataset = load_pyg(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
+    if args.dataset.startswith('TU_PROTEINS'):
+        dataset = TUDataset(path, name=args.dataset, pre_transform=pre_transform, pre_filter=ProteinFilter())
+    else:
+        dataset = load_pyg(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
 elif args.data_format == 'ogb':
     dataset = load_ogb(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
 else:
