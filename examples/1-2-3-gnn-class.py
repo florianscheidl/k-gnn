@@ -52,8 +52,6 @@ class MyPreTransformNoFeatures(object):
         data.x = degree(data.edge_index[0], data.num_nodes, dtype=torch.long) # use degree instead of one-hot encoding of degree.
         # print("NoFeatureTransform, data.x: ", data.x)
         data.x = F.one_hot(data.x, num_classes=self.num_classes).to(torch.float)
-        setattr(data, '_real_num_node_features', self.num_classes)
-        assert(data._real_num_node_features != 0.0)
         return data
 
 class ConstantPreTransform(object):
