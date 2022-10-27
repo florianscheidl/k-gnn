@@ -91,9 +91,6 @@ elif args.data_format == 'ogb':
 else:
     raise ValueError('Unknown data format: {}'.format(args.data_format))
 
-if not hasattr(dataset.data,'_real_num_node_features'):
-    print("lost num featuers after pre_transform.")
-
 perm = torch.randperm(len(dataset), dtype=torch.long)
 dataset = dataset[perm]
 
