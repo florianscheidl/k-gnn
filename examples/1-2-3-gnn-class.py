@@ -119,9 +119,10 @@ class Net(torch.nn.Module):
             print("No _real_num_node_features attribute found in in_dataset.data.")
         print("in_dataset.num_node_features: ", in_dataset.num_node_features)
         # assert (in_dataset.data.num_node_features != 0.0)
-        setattr(self,
-                'conv_initial',
-                GraphConv(in_dataset.data.num_node_features, args.initial_emb_dim))
+        try:
+            setattr(self,'conv_initial',GraphConv(in_dataset.data.num_node_features, args.initial_emb_dim))
+        except:
+            setattr(self,'conv_initial',GraphConv(in_dataset.num_features, args.initial_emb_dim))
 
         # args.num_layers_per_dim layers per dimension j
         for j in range(args.max_k):
