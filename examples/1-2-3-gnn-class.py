@@ -82,10 +82,9 @@ else:
     pre_transform=T.Compose([TwoMalkin(), ConnectedThreeMalkin()])
 
 if args.data_format == 'PyG':
-    if args.dataset.startswith('TU_PROTEINS'):
-        dataset = TUDataset(path, name='PROTEINS', pre_transform=pre_transform, pre_filter=ProteinFilter())
-    else:
-        dataset = load_pyg(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
+    dataset = load_pyg(dataset_dir=path,
+                       name=args.dataset,
+                       pre_transform=pre_transform)
 elif args.data_format == 'ogb':
     dataset = load_ogb(dataset_dir=path, name=args.dataset, pre_transform=pre_transform)
 else:
