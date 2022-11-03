@@ -8,7 +8,7 @@ parameters:
 
   # Randomness
   seed:
-    values: [10,11,12,13]
+    values: [10,11,12,13,14,15,16,17,18,19]
 
   # dataset:
   dataset:
@@ -42,11 +42,11 @@ parameters:
   initial_emb_dim:
     value: 8
   max_k:
-    values: [2,3]
+    values: [3]
 
   # Regularization
   drop_rate:
-    values: ['0.25', '0.5']
+    values: ['0.25']
 
   # Optimizer
   lr:

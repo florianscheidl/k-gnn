@@ -8,7 +8,7 @@ parameters:
 
   # Randomness
   seed:
-    values: [10,11,12,13]
+    values: [10,11,12,13,14,15,16,17,18,19]
 
   # dataset:
   dataset:
